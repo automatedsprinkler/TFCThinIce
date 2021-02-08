@@ -1,0 +1,16 @@
+[
+{
+  "modid": "tfice",
+  "name": "Thin Ice",
+  "description": "Replaces TerraFirmaCraft+ ice with a type that comes in 3 stages: thin, moderate and thick. When stepped on, thin ice has a chance of breaking, moderate ice has a chance of becoming thin and thick ice remains solid.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Dinglydell"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": ["terrafirmacraftplus"]
+}
+]
