@@ -1,4 +1,4 @@
-# TFCThinIce
+# TFC+ Thin Ice
 
 A simple addon for TerraFirmaCraft+ 0.86.2 that adds dangerous thin ice. Main features:
 
