@@ -57,10 +57,8 @@ public class BlockUnstableIce extends BlockCustomIce {
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z) {
 		int meta = world.getBlockMetadata(x, y, z);
-		if(meta < 2) {
-			return 0.2f;
-		}
-		return 0.5f;
+		// The thicker the ice, the harder to break
+		return 0.2f * (meta/2);
 	}
 	
 	@Override
@@ -124,28 +122,23 @@ public class BlockUnstableIce extends BlockCustomIce {
 			//float partialFreezeTemp = getPartialFreezeTemp(meta);
 			int freezeProgressionChance =  (int) Math.max(1, (10 + 2*(temp - freezeTemp) + 8*(meta/2)));
 			int meltProgressionChance = (int)Math.max(1, (10 + 2*(freezeTemp - temp)));
-			if(meta < 4 && temp < freezeTemp && rand.nextInt(freezeProgressionChance) == 0){
-				
+			if(meta < 4 && temp < freezeTemp && rand.nextInt(freezeProgressionChance) == 0) {
 				// freeze further
-					world.setBlockMetadataWithNotify(x, y, z, meta + 2, 0);
-					//TerraFirmaCraft.LOG.info("Frozen " + meta + "->" + (meta+2));
-					
-				
+				world.setBlockMetadataWithNotify(x, y, z, meta + 2, 0);
+				//TerraFirmaCraft.LOG.info("Frozen " + meta + "->" + (meta+2));
 			} else if(meta > 2 && temp > freezeTemp && rand.nextInt(meltProgressionChance) == 0 ) {
 				//melt slightly
 				world.setBlockMetadataWithNotify(x, y, z, meta - 2, 0);
 				//TerraFirmaCraft.LOG.info("Melted " + meta + "->" + (meta-2));
 			}
-			
-			
 		}
 	}
 	private float getFreezeTemp(int meta) {
 		switch(meta % 2) {
-		case 0:
-			return -2;
-		case 1:
-			return 0;
+			case 0: //sea ice
+				return -2;
+			case 1: //fresh ice
+				return 0;
 		}
 		return 0;
 	}
