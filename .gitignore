@@ -6,6 +6,7 @@ options.txt
 usernamecache.json
 crash-reports/
 logs/
+screenshots/
 
 # built application files
 *.apk
