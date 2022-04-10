@@ -9,5 +9,5 @@ A simple addon for TerraFirmaCraft+ 0.86.2 that adds dangerous thin ice. Main fe
 * When the ambient temperature is above freezing, ice will gradually thaw through each stage before becoming water. The further above freezing temperature it is the faster it will progress.
 
 Some things to note:
-* When ice is generated in new chunks, it will always start out as thin ice. AFAIK there is nothing that can really be done about this with an addon.
+* When ice is generated in new chunks, it will always start out as thin ice. This means if you are exploring the artic wastes where the maximum temperature is -10 all ice will be (initially) thin and dangerous. AFAIK there is nothing that can really be done about this with an addon.
 * This addon completely replaces TFC+'s ice with its own block which may cause compatibility issues with other addons that mess with ice.
