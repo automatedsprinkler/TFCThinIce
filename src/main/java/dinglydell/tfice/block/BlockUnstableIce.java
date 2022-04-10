@@ -2,7 +2,6 @@ package dinglydell.tfice.block;
 
 import java.util.Random;
 
-import com.dunk.tfc.TerraFirmaCraft;
 import com.dunk.tfc.Blocks.Vanilla.BlockCustomIce;
 import com.dunk.tfc.Core.TFC_Climate;
 import com.dunk.tfc.WorldGen.TFCProvider;
@@ -11,7 +10,6 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
@@ -58,7 +56,7 @@ public class BlockUnstableIce extends BlockCustomIce {
 	public float getBlockHardness(World world, int x, int y, int z) {
 		int meta = world.getBlockMetadata(x, y, z);
 		// The thicker the ice, the harder to break
-		return 0.2f * (meta/2);
+		return 0.2f * (1+meta/2);
 	}
 	
 	@Override
@@ -108,6 +106,7 @@ public class BlockUnstableIce extends BlockCustomIce {
 	}
 	
 	
+	
 	/**
 	 * Ticks the block if it's been scheduled
 	 */
@@ -126,9 +125,15 @@ public class BlockUnstableIce extends BlockCustomIce {
 				// freeze further
 				world.setBlockMetadataWithNotify(x, y, z, meta + 2, 0);
 				//TerraFirmaCraft.LOG.info("Frozen " + meta + "->" + (meta+2));
-			} else if(meta > 2 && temp > freezeTemp && rand.nextInt(meltProgressionChance) == 0 ) {
+			} else if(temp > freezeTemp && rand.nextInt(meltProgressionChance) == 0 ) {
 				//melt slightly
+				if(meta > 2) {
 				world.setBlockMetadataWithNotify(x, y, z, meta - 2, 0);
+				} else if(meta == 0){
+					world.setBlock(x, y, z, TFCBlocks.saltWaterStationary, 0, 2);
+				} else {
+					world.setBlock(x, y, z, TFCBlocks.saltWaterStationary, 0, 2);
+				}
 				//TerraFirmaCraft.LOG.info("Melted " + meta + "->" + (meta-2));
 			}
 		}
