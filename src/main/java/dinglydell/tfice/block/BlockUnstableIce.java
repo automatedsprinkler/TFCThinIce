@@ -94,7 +94,7 @@ public class BlockUnstableIce extends BlockCustomIce {
 			world.playSoundEffect(x, y, z, Block.soundTypeGlass.getBreakSound(), 1f, 1f);
 			//TerraFirmaCraft.LOG.info("sound "+ x + ", " + y + "," + z);
 		} else if(world.rand.nextInt(1+100 * breakChanceMultiplier) == 0) {
-			world.setBlockMetadataWithNotify(x, y, z, meta - 2, 0);
+			world.setBlockMetadataWithNotify(x, y, z, meta - ICE_TYPES, 0);
 		}
 	
 	}
@@ -128,20 +128,18 @@ public class BlockUnstableIce extends BlockCustomIce {
 			int meta = world.getBlockMetadata(x, y, z);
 			float freezeTemp = getFreezeTemp(meta);
 			//float partialFreezeTemp = getPartialFreezeTemp(meta);
-			int freezeProgressionChance =  (int) Math.max(1, (10 + 2*(temp - freezeTemp) + 8*(meta/2)));
+			int freezeProgressionChance =  (int) Math.max(1, (10 + 2*(temp - freezeTemp) + 8*(meta/ICE_TYPES)));
 			int meltProgressionChance = (int)Math.max(1, (10 + 2*(freezeTemp - temp)));
 			if(meta < 4 && temp < freezeTemp && rand.nextInt(freezeProgressionChance) == 0) {
 				// freeze further
-				world.setBlockMetadataWithNotify(x, y, z, meta + 2, 0);
+				world.setBlockMetadataWithNotify(x, y, z, meta + ICE_TYPES, 0);
 				//TerraFirmaCraft.LOG.info("Frozen " + meta + "->" + (meta+2));
 			} else if(temp > freezeTemp && rand.nextInt(meltProgressionChance) == 0 ) {
 				//melt slightly
 				if(meta > 2) {
-				world.setBlockMetadataWithNotify(x, y, z, meta - 2, 0);
-				} else if(meta == 0){
-					world.setBlock(x, y, z, TFCBlocks.saltWaterStationary, 0, 2);
+				world.setBlockMetadataWithNotify(x, y, z, meta - ICE_TYPES, 0);
 				} else {
-					world.setBlock(x, y, z, TFCBlocks.saltWaterStationary, 0, 2);
+					world.setBlock(x, y, z, getBlockMelt(world, x, y, z, false), 0, 2);
 				}
 				//TerraFirmaCraft.LOG.info("Melted " + meta + "->" + (meta-2));
 			}
