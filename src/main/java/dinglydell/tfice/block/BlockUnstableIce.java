@@ -16,6 +16,8 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockUnstableIce extends BlockCustomIce {
+	private static final int ICE_TYPES = 3;
+	
 	@Override
 	public int getLightOpacity(IBlockAccess world, int x, int y, int z) {
 
@@ -25,13 +27,19 @@ public class BlockUnstableIce extends BlockCustomIce {
 				return 7;
 			case 1: // just about fresh ice
 				return 1;
-			case 2: // solidish sea ice
+			case 2: // just about tannin ice
+				return 1;
+			case 3: // solidish sea ice
 				return 9;
-			case 3: // solidish fresh ice
+			case 4: // solidish fresh ice
 				return 3;
-			case 4: // very solid sea ice
+			case 5: // solidish tannin ice
+				return 3;
+			case 6: // very solid sea ice
 				return 11;
-			case 5: // very solid fresh ice
+			case 7: // very solid fresh ice
+				return 5;
+			case 8: // very solid tannin ice
 				return 5;
 		}
 		return this.getLightOpacity();
@@ -45,9 +53,10 @@ public class BlockUnstableIce extends BlockCustomIce {
 			return block;
 
 		int meta = world.getBlockMetadata(i, j, k);
-		switch(meta % 2){
+		switch(meta % ICE_TYPES){
 		case 0: return TFCBlocks.saltWater;
 		case 1: return TFCBlocks.freshWater;
+		case 2: return TFCBlocks.tanninWater;
 		default: return TFCBlocks.saltWater;
 		}
 	}
@@ -56,7 +65,7 @@ public class BlockUnstableIce extends BlockCustomIce {
 	public float getBlockHardness(World world, int x, int y, int z) {
 		int meta = world.getBlockMetadata(x, y, z);
 		// The thicker the ice, the harder to break
-		return 0.2f * (1+meta/2);
+		return 0.2f * (1+meta/ICE_TYPES);
 	}
 	
 	@Override
@@ -66,7 +75,7 @@ public class BlockUnstableIce extends BlockCustomIce {
 			return;
 		}
 		int meta = world.getBlockMetadata(x, y, z);
-		if(meta >= 4) {
+		if(meta >= ICE_TYPES * 2) {
 			return;
 		}
 		//TerraFirmaCraft.LOG.info(meta + " entity " + entity.getClass());
@@ -80,7 +89,7 @@ public class BlockUnstableIce extends BlockCustomIce {
 		//if(entity instanceof EntityPlayer) {
 		//	TerraFirmaCraft.LOG.info("meta" + meta + ", break chance:" + breakChanceMultiplier);
 		//}
-		if(meta < 2 && world.rand.nextInt(1+2*breakChanceMultiplier) == 0) {
+		if(meta < ICE_TYPES && world.rand.nextInt(1+2*breakChanceMultiplier) == 0) {
 			world.setBlock(x, y, z, getBlockMelt(world, x, y, z, false));
 			world.playSoundEffect(x, y, z, Block.soundTypeGlass.getBreakSound(), 1f, 1f);
 			//TerraFirmaCraft.LOG.info("sound "+ x + ", " + y + "," + z);
@@ -102,7 +111,7 @@ public class BlockUnstableIce extends BlockCustomIce {
 	@Override
 	public IIcon getIcon(int par1, int par2)
 	{
-		return super.getIcon(par1, par2 % 2);
+		return super.getIcon(par1, par2 % ICE_TYPES);
 	}
 	
 	
@@ -139,10 +148,12 @@ public class BlockUnstableIce extends BlockCustomIce {
 		}
 	}
 	private float getFreezeTemp(int meta) {
-		switch(meta % 2) {
+		switch(meta % ICE_TYPES) {
 			case 0: //sea ice
 				return -2;
 			case 1: //fresh ice
+				return 0;
+			case 2: //tannin ice
 				return 0;
 		}
 		return 0;
